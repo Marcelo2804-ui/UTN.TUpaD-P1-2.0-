@@ -92,3 +92,4 @@ print("Tu lista personalizada quedó así:", mi_lista)
 
 
 #Profe del 6 al 10 se me termino las ideas, la aplicacion de lista debo practicarla mas.
+

@@ -130,5 +130,4 @@ mi_nombre_mayus = mi_nombre.capitalize()
 #mi_nombre_mayus = mi_nombre.title()  // Hace que se ponga mayuscula la primera letra despues de un espacio
 
 print(mi_nombre_mayus)
-
 print('') # Espacio 

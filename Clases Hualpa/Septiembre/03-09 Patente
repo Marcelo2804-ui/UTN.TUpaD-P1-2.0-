@@ -47,3 +47,4 @@ else:
 new_patent = f'{letter_2} {numbers_2:03}' # 03 rellena de digitos
 
 print(f'La patente correspondiente es: {new_patent}')
+
