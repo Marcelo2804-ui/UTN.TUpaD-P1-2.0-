@@ -1,0 +1,159 @@
+clases = [] 
+cupos = []   
+
+print("=== Gimnasio: Gestión de Clases y Cupos ===")
+print("Arrancás con listas vacías. Cargá clases y cupos desde el menú.")
+print()
+
+while True:
+    print("\nMenú")
+    print("1) Ingresar lista de clases")
+    print("2) Ingresar cupos por clase")
+    print("3) Mostrar clases con cupos")
+    print("4) Consultar cupo de una clase")
+    print("5) Listar clases sin cupo")
+    print("6) Agregar clase (con cupos)")
+    print("7) Ver sin cupo (atajo de 5)")
+    print("8) Actualizar cupos (inscribir/baja)")
+    print("9) Ver todas las clases (igual a 3)")
+    print("0) Salir")
+
+    op = input("Elegí opción: ").strip()
+    if not op.isdigit():
+        print("Opción inválida (no numérica).")
+        continue
+
+    op = int(op)
+
+    if op == 0:
+        print("Saliendo...")
+        break
+
+    elif op == 1:
+        # Ingresar N clases (nombres únicos). Cupos quedan en 0 hasta la opción 2.
+        n = input("¿Cuántas clases vas a cargar? ").strip()
+        if not n.isdigit():
+            print("Cantidad inválida.")
+            continue
+        n = int(n)
+        if n <= 0:
+            print("La cantidad debe ser mayor a 0.")
+            continue
+
+        i = 0
+        while i < n:
+            nombre = input(f"Clase {i+1}: ").strip()
+            if nombre == "":
+                print("El nombre no puede estar vacío.")
+                continue
+            # Verificar duplicado (case-insensitive)
+            existe = False
+            j = 0
+            while j < len(clases):
+                if clases[j].lower() == nombre.lower():
+                    existe = True
+                    break
+                j += 1
+
+            if existe:
+                print("Esa clase ya existe, no se agrega.")
+            else:
+                clases.append(nombre)
+                cupos.append(0)  # por ahora 0 hasta que se asignen
+                print(f"Agregada: {nombre} (cupos=0)")
+                if len(clases) != len(cupos):
+                    print("Error interno: listas desincronizadas.")
+            i += 1
+
+    elif op == 2:
+        # Ingresar/actualizar cupos por clase en orden
+        if len(clases) == 0:
+            print("No hay clases cargadas.")
+            continue
+
+        print("Ingresá los cupos (entero ≥ 0) para cada clase:")
+        idx = 0
+        while idx < len(clases):
+            valor = input(f"Cupos para {clases[idx]}: ").strip()
+            if not valor.isdigit():
+                print("Cupos inválidos (entero ≥ 0).")
+                continue
+            c = int(valor)
+            if c < 0:
+                print("Los cupos no pueden ser negativos.")
+                continue
+            cupos[idx] = c
+            idx += 1
+
+        if len(clases) != len(cupos):
+            print("Error interno: listas desincronizadas.")
+
+    elif op == 3 or op == 9:
+        # Mostrar todas las clases con sus cupos
+        if len(clases) == 0:
+            print("No hay clases para mostrar.")
+        else:
+            print("\n--- Clases y cupos ---")
+            k = 0
+            while k < len(clases):
+                print(f"{clases[k]}: {cupos[k]} cupos")
+                k += 1
+
+    elif op == 4:
+        # Consultar cupo de una clase
+        if len(clases) == 0:
+            print("No hay clases cargadas.")
+            continue
+
+        buscada = input("Clase a consultar: ").strip()
+        if buscada == "":
+            print("El nombre no puede estar vacío.")
+            continue
+
+        pos = -1
+        k = 0
+        while k < len(clases):
+            if clases[k].lower() == buscada.lower():
+                pos = k
+                break
+            k += 1
+
+        if pos == -1:
+            print("Esa clase no existe.")
+        else:
+            print(f"{clases[pos]}: {cupos[pos]} cupos disponibles")
+
+    elif op == 5 or op == 7:
+        # Listar clases con cupo = 0
+        if len(clases) == 0:
+            print("No hay clases cargadas.")
+            continue
+
+        hay = False
+        k = 0
+        while k < len(clases):
+            if cupos[k] == 0:
+                if not hay:
+                    print("\n--- Clases sin cupo ---")
+                    hay = True
+                print(clases[k])
+            k += 1
+
+        if not hay:
+            print("Todas tienen cupo (> 0).")
+
+    elif op == 6:
+        # Agregar clase con cupo inicial
+        nombre = input("Nombre de la nueva clase: ").strip()
+        if nombre == "":
+            print("El nombre no puede estar vacío.")
+            continue
+
+        # Duplicado
+        existe = False
+        j = 0
+        while j < len(clases):
+            if clases[j].lower() == nombre.lower():
+                existe = True
+                break
+               

@@ -1,0 +1,238 @@
+especialidades = []   
+cupos = []            
+
+
+print("=== Sistema de Turnos por Especialidad (cupos del día) ===")
+print("Arrancás con listas vacías. Podés cargar especialidades y cupos desde el menú.")
+print()
+
+while True:
+    print("\nMenú")
+    print("1) Ingresar lista de especialidades")
+    print("2) Ingresar lista de cupos por especialidad")
+    print("3) Mostrar agenda")
+    print("4) Consultar cupos de una especialidad")
+    print("5) Listar especialidades sin cupo")
+    print("6) Agregar especialidad (con cupos)")
+    print("7) Ver sin cupo (atajo de 5)")
+    print("8) Actualizar cupos (reservar/cancelar)")
+    print("9) Ver agenda (igual a 3)")
+    print("0) Salir")
+
+    op = input("Elegí opción: ").strip()
+    if not op.isdigit():
+        print("Opción inválida (no numérica).")
+        continue
+
+    op = int(op)
+
+    if op == 0:
+        print("Saliendo...")
+        break
+
+    elif op == 1:
+        # Ingresar N especialidades (agrega nombres únicos). Cupos se ponen 0 por defecto.
+        n = input("¿Cuántas especialidades vas a cargar? ").strip()
+        if not n.isdigit():
+            print("Cantidad inválida.")
+            continue
+        n = int(n)
+        if n <= 0:
+            print("La cantidad debe ser mayor a 0.")
+            continue
+        i = 0
+        while i < n:
+            nombre = input(f"Especialidad {i+1}: ").strip()
+            if nombre == "":
+                print("El nombre no puede estar vacío.")
+                continue
+
+            # Verificar duplicado (case-insensitive)
+            existe = False
+            j = 0
+            while j < len(especialidades):
+                if especialidades[j].lower() == nombre.lower():
+                    existe = True
+                    break
+                j += 1
+
+            if existe:
+                print("Ya existe esa especialidad, no se agrega.")
+            else:
+                especialidades.append(nombre)
+                cupos.append(0)  # dejo 0 hasta que se actualicen en la opción 2
+                print(f"Agregada: {nombre} (cupos=0)")
+                # sin perder sincronía entre listas
+                if len(especialidades) != len(cupos):
+                    print("Error interno: listas desincronizadas.")
+            i += 1
+
+    elif op == 2:
+        # Ingresar/actualizar cupos para cada especialidad en orden
+        if len(especialidades) == 0:
+            print("No hay especialidades cargadas.")
+            continue
+
+        print("Ingresá los cupos para cada especialidad (número ≥ 0).")
+        idx = 0
+        while idx < len(especialidades):
+            valor = input(f"Cupos para {especialidades[idx]}: ").strip()
+            if not valor.isdigit():
+                print("Cupos inválidos (tiene que ser un número entero ≥ 0).")
+                continue
+            c = int(valor)
+            if c < 0:
+                print("Los cupos no pueden ser negativos.")
+                continue
+            cupos[idx] = c
+            idx += 1
+
+        # chequeo sincronía
+        if len(especialidades) != len(cupos):
+            print("Error interno: listas desincronizadas.")
+
+    elif op == 3 or op == 9:
+        # Mostrar agenda (nombre: X cupos)
+        if len(especialidades) == 0:
+            print("No hay especialidades para mostrar.")
+        else:
+            print("\n--- Agenda ---")
+            k = 0
+            while k < len(especialidades):
+                print(f"{especialidades[k]}: {cupos[k]} cupos")
+                k += 1
+
+    elif op == 4:
+        # Consultar cupos de una especialidad
+        if len(especialidades) == 0:
+            print("No hay especialidades cargadas.")
+            continue
+        buscado = input("Especialidad a consultar: ").strip()
+        if buscado == "":
+            print("El nombre no puede estar vacío.")
+            continue
+
+        pos = -1
+        k = 0
+        while k < len(especialidades):
+            if especialidades[k].lower() == buscado.lower():
+                pos = k
+                break
+            k += 1
+
+        if pos == -1:
+            print("Esa especialidad no existe.")
+        else:
+            print(f"{especialidades[pos]}: {cupos[pos]} cupos disponibles")
+
+    elif op == 5 or op == 7:
+        # Listar especialidades sin cupo (cupo = 0)
+        if len(especialidades) == 0:
+            print("No hay especialidades cargadas.")
+            continue
+
+        hay = False
+        k = 0
+        while k < len(especialidades):
+            if cupos[k] == 0:
+                if not hay:
+                    print("\n--- Sin cupo ---")
+                    hay = True
+                print(especialidades[k])
+            k += 1
+
+        if not hay:
+            print("Todas tienen cupo (> 0).")
+
+    elif op == 6:
+        # Agregar 1 especialidad con su cupo inicial
+        nombre = input("Nombre de la nueva especialidad: ").strip()
+        if nombre == "":
+            print("El nombre no puede estar vacío.")
+            continue
+
+        # Duplicado
+        existe = False
+        j = 0
+        while j < len(especialidades):
+            if especialidades[j].lower() == nombre.lower():
+                existe = True
+                break
+            j += 1
+
+        if existe:
+            print("Ya existe esa especialidad.")
+            continue
+
+        valor = input("Cupos iniciales (≥ 0): ").strip()
+        if not valor.isdigit():
+            print("Cupos inválidos (tiene que ser un número entero ≥ 0).")
+            continue
+        c = int(valor)
+        if c < 0:
+            print("Los cupos no pueden ser negativos.")
+            continue
+
+        especialidades.append(nombre)
+        cupos.append(c)
+        print(f"Agregada: {nombre} con {c} cupos.")
+
+        # sincronía
+        if len(especialidades) != len(cupos):
+            print("Error interno: listas desincronizadas.")
+
+    elif op == 8:
+        # Actualizar cupos (reservar/cancelar)
+        if len(especialidades) == 0:
+            print("No hay especialidades cargadas.")
+            continue
+
+        objetivo = input("Especialidad a actualizar: ").strip()
+        if objetivo == "":
+            print("El nombre no puede estar vacío.")
+            continue
+
+        pos = -1
+        k = 0
+        while k < len(especialidades):
+            if especialidades[k].lower() == objetivo.lower():
+                pos = k
+                break
+            k += 1
+
+        if pos == -1:
+            print("Esa especialidad no existe.")
+            continue
+
+        print(f"Actual: {especialidades[pos]} tiene {cupos[pos]} cupos.")
+        accion = input("¿Reservar (R) o Cancelar (C)? ").strip().lower()
+        if accion not in ("r", "c"):
+            print("Opción inválida. Usá R o C.")
+            continue
+
+        cant = input("Cantidad (entero ≥ 1): ").strip()
+        if not cant.isdigit():
+            print("Cantidad inválida (tiene que ser entero ≥ 1).")
+            continue
+        cant = int(cant)
+        if cant <= 0:
+            print("La cantidad debe ser ≥ 1.")
+            continue
+
+        if accion == "r":
+            if cant > cupos[pos]:
+                print("No se puede reservar más de lo disponible.")
+            else:
+                cupos[pos] = cupos[pos] - cant
+                print(f"Reserva OK. Nuevo cupo: {cupos[pos]}")
+        else:
+            # cancelar (aumenta cupos)
+            cupos[pos] = cupos[pos] + cant
+            print(f"Cancelación OK. Nuevo cupo: {cupos[pos]}")
+
+        # sincronía
+        if len(especialidades) != len(cupos):
+            print("Error interno: listas desincronizadas.")
+
+    else:
+        print("Opción inexistente. Probá otra vez.")

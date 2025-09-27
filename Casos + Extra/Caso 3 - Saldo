@@ -1,0 +1,210 @@
+tarjetas = [] 
+saldos = []    
+
+print("=== Sistema SUBE: Tarjetas y Saldos ===")
+print("Arrancás con listas vacías. Podés cargar tarjetas y saldos desde el menú.")
+print()
+
+while True:
+    print("\nMenú")
+    print("1) Ingresar números de tarjeta")
+    print("2) Ingresar saldos correspondientes")
+    print("3) Mostrar todas las tarjetas y saldos")
+    print("4) Consultar saldo por número")
+    print("5) Listar saldos en negativo o cero")
+    print("6) Agregar tarjeta (con saldo)")
+    print("7) Ver saldos ≤ 0 (atajo de 5)")
+    print("8) Cargar/Debitar saldo")
+    print("9) Ver todas (igual a 3)")
+    print("0) Salir")
+
+    op = input("Elegí opción: ").strip()
+    if not op.isdigit():
+        print("Opción inválida (no numérica).")
+        continue
+
+    op = int(op)
+
+    if op == 0:
+        print("Saliendo...")
+        break
+
+    elif op == 1:
+        n = input("¿Cuántas tarjetas vas a cargar? ").strip()
+        if not n.isdigit():
+            print("Cantidad inválida.")
+            continue
+        n = int(n)
+        if n <= 0:
+            print("Debe ser mayor a 0.")
+            continue
+
+        i = 0
+        while i < n:
+            num = input(f"Número de tarjeta {i+1} (16 dígitos): ").strip()
+            if len(num) != 16 or not num.isdigit():
+                print("Número inválido (debe tener 16 dígitos).")
+                continue
+
+            # Verificar duplicado
+            existe = False
+            j = 0
+            while j < len(tarjetas):
+                if tarjetas[j] == num:
+                    existe = True
+                    break
+                j += 1
+
+            if existe:
+                print("Esa tarjeta ya existe.")
+            else:
+                tarjetas.append(num)
+                saldos.append(0.0)  # saldo inicial 0
+                print(f"Agregada tarjeta {num} con saldo $0.00")
+            i += 1
+
+    elif op == 2:
+        if len(tarjetas) == 0:
+            print("No hay tarjetas cargadas.")
+            continue
+
+        print("Ingresá los saldos para cada tarjeta (número ≥ 0).")
+        idx = 0
+        while idx < len(tarjetas):
+            valor = input(f"Saldo para {tarjetas[idx]}: ").strip()
+            try:
+                s = float(valor)
+            except:
+                print("Saldo inválido (debe ser número).")
+                continue
+            if s < 0:
+                print("El saldo no puede ser negativo.")
+                continue
+            saldos[idx] = s
+            idx += 1
+
+    elif op == 3 or op == 9:
+        if len(tarjetas) == 0:
+            print("No hay tarjetas para mostrar.")
+        else:
+            print("\n--- Tarjetas y saldos ---")
+            k = 0
+            while k < len(tarjetas):
+                print(f"Tarjeta: {tarjetas[k]} - Saldo: ${saldos[k]:.2f}")
+                k += 1
+
+    elif op == 4:
+        if len(tarjetas) == 0:
+            print("No hay tarjetas cargadas.")
+            continue
+
+        num = input("Número de tarjeta a consultar: ").strip()
+        pos = -1
+        k = 0
+        while k < len(tarjetas):
+            if tarjetas[k] == num:
+                pos = k
+                break
+            k += 1
+
+        if pos == -1:
+            print("Esa tarjeta no existe.")
+        else:
+            print(f"Saldo de {tarjetas[pos]}: ${saldos[pos]:.2f}")
+
+    elif op == 5 or op == 7:
+        if len(tarjetas) == 0:
+            print("No hay tarjetas cargadas.")
+            continue
+
+        hay = False
+        k = 0
+        while k < len(tarjetas):
+            if saldos[k] <= 0:
+                if not hay:
+                    print("\n--- Tarjetas con saldo ≤ 0 ---")
+                    hay = True
+                print(f"{tarjetas[k]} (Saldo: ${saldos[k]:.2f})")
+            k += 1
+
+        if not hay:
+            print("Todas tienen saldo positivo.")
+
+    elif op == 6:
+        num = input("Número de la nueva tarjeta (16 dígitos): ").strip()
+        if len(num) != 16 or not num.isdigit():
+            print("Número inválido (debe tener 16 dígitos).")
+            continue
+        # Duplicado
+        existe = False
+        j = 0
+        while j < len(tarjetas):
+            if tarjetas[j] == num:
+                existe = True
+                break
+            j += 1
+
+        if existe:
+            print("Esa tarjeta ya existe.")
+            continue
+
+        valor = input("Saldo inicial (≥ 0): ").strip()
+        try:
+            s = float(valor)
+        except:
+            print("Saldo inválido (debe ser número).")
+            continue
+        if s < 0:
+            print("El saldo no puede ser negativo.")
+            continue
+
+        tarjetas.append(num)
+        saldos.append(s)
+        print(f"Agregada tarjeta {num} con saldo ${s:.2f}")
+
+    elif op == 8:
+        if len(tarjetas) == 0:
+            print("No hay tarjetas cargadas.")
+            continue
+
+        num = input("Número de tarjeta: ").strip()
+        pos = -1
+        k = 0
+        while k < len(tarjetas):
+            if tarjetas[k] == num:
+                pos = k
+                break
+            k += 1
+
+        if pos == -1:
+            print("Esa tarjeta no existe.")
+            continue
+
+        print(f"Saldo actual: ${saldos[pos]:.2f}")
+        accion = input("¿Cargar (C) o Debitar (D)? ").strip().lower()
+        if accion not in ("c", "d"):
+            print("Opción inválida. Usá C o D.")
+            continue
+
+        monto = input("Monto (positivo): ").strip()
+        try:
+            m = float(monto)
+        except:
+            print("Monto inválido.")
+            continue
+        if m <= 0:
+            print("El monto debe ser mayor a 0.")
+            continue
+
+        if accion == "c":
+            saldos[pos] += m
+            print(f"Carga OK. Nuevo saldo: ${saldos[pos]:.2f}")
+        else:
+            if m > saldos[pos]:
+                print("No se puede debitar más del saldo disponible.")
+            else:
+                saldos[pos] -= m
+                print(f"Débito OK. Nuevo saldo: ${saldos[pos]:.2f}")
+
+    else:
+        print("Opción inexistente. Probá otra vez.")
