@@ -2,7 +2,7 @@ cuentas = ["marcelobr", "marceloscherer", "cintiatr", "thomytr", "thomasadriano"
 
 marcelobr = ["Fifa 25", "Expedition 33", "Cyberpunk 2077"]
 marceloscherer = ["The Witcher 3: Wild Hunt", "Fifa 24"]
-cintiatr = ["Far Cry 3: Classic", "Far Cry 5","Forza Horizon 5"]
+cintiatr = ["Far Cry 3: Classic", "Far Cry 5", "Forza Horizon 5"]
 thomytr = ["No Man Sky", "Mortal Kombat 11"]
 thomasadriano = ["Need For Speed Heat", "Mortal Kombat XL"]
 gtatrilogy = ["Grand Theft Auto III", "Grand Theft Auto: San Andreas", "Grand Theft Auto: Liberty City"]
@@ -22,28 +22,124 @@ while True:
     opcion = input("Elegí una opción: ")
 
     if opcion == "1":
-        print("Cuentas disponibles:")
+        print("\nCuentas disponibles:")
         for cuenta in cuentas:
             print("-", cuenta)
 
     elif opcion == "2":
+        while True:
+            print("\n--- Seleccioná una cuenta ---")
+            for i in range(len(cuentas)):
+                print(f"{i+1} - {cuentas[i]}")
+            print("0 - Volver al menú principal")
+
+            seleccion = input("Elegí el número de cuenta: ")
+
+            if seleccion == "0":
+                break
+            elif seleccion.isdigit() and 1 <= int(seleccion) <= len(cuentas):
+                alias = cuentas[int(seleccion) - 1]
+                if alias == "marcelobr":
+                    print(marcelobr)
+                elif alias == "marceloscherer":
+                    print(marceloscherer)
+                elif alias == "cintiatr":
+                    print(cintiatr)
+                elif alias == "thomytr":
+                    print(thomytr)
+                elif alias == "thomasadriano":
+                    print(thomasadriano)
+                elif alias == "gtatrilogy":
+                    print(gtatrilogy)
+                elif alias == "minecraft":
+                    print(minecraft)
+            else:
+                print("Opción inválida.")
+
+    elif opcion == "3":
         alias = input("Ingresá el alias de la cuenta: ")
+        juego = input("Ingresá el nombre del juego a agregar: ")
         if alias == "marcelobr":
-            print(marcelobr)
+            marcelobr.append(juego)
         elif alias == "marceloscherer":
-            print(marceloscherer)
+            marceloscherer.append(juego)
         elif alias == "cintiatr":
-            print(cintiatr)
+            cintiatr.append(juego)
         elif alias == "thomytr":
-            print(thomytr)
+            thomytr.append(juego)
         elif alias == "thomasadriano":
-            print(thomasadriano)
+            thomasadriano.append(juego)
         elif alias == "gtatrilogy":
-            print(gtatrilogy)
+            gtatrilogy.append(juego)
         elif alias == "minecraft":
-            print(minecraft)
+            minecraft.append(juego)
         else:
             print("Alias no encontrado.")
+
+    elif opcion == "4":
+        alias = input("Ingresá el alias de la cuenta: ")
+        juego = input("Ingresá el nombre del juego a eliminar: ")
+        if alias == "marcelobr" and juego in marcelobr:
+            marcelobr.remove(juego)
+        elif alias == "marceloscherer" and juego in marceloscherer:
+            marceloscherer.remove(juego)
+        elif alias == "cintiatr" and juego in cintiatr:
+            cintiatr.remove(juego)
+        elif alias == "thomytr" and juego in thomytr:
+            thomytr.remove(juego)
+        elif alias == "thomasadriano" and juego in thomasadriano:
+            thomasadriano.remove(juego)
+        elif alias == "gtatrilogy" and juego in gtatrilogy:
+            gtatrilogy.remove(juego)
+        elif alias == "minecraft" and juego in minecraft:
+            minecraft.remove(juego)
+        else:
+            print("Alias o juego no encontrado.")
+
+    elif opcion == "5":
+        juego = input("Ingresá el nombre del juego a buscar: ")
+        encontrado = False
+        if juego in marcelobr:
+            print("Lo tenés en marcelobr")
+            encontrado = True
+        if juego in marceloscherer:
+            print("Lo tenés en marceloscherer")
+            encontrado = True
+        if juego in cintiatr:
+            print("Lo tenés en cintiatr")
+            encontrado = True
+        if juego in thomytr:
+            print("Lo tenés en thomytr")
+            encontrado = True
+        if juego in thomasadriano:
+            print("Lo tenés en thomasadriano")
+            encontrado = True
+        if juego in gtatrilogy:
+            print("Lo tenés en gtatrilogy")
+            encontrado = True
+        if juego in minecraft:
+            print("Lo tenés en minecraft")
+            encontrado = True
+        if not encontrado:
+            print("No tenés ese juego en ninguna cuenta.")
+
+    elif opcion == "6":
+        total = len(marcelobr) + len(marceloscherer) + len(cintiatr) + len(thomytr) + len(thomasadriano) + len(gtatrilogy) + len(minecraft)
+        print(f"Tenés un total de {total} juegos.")
+
+    elif opcion == "7":
+        todos = marcelobr + marceloscherer + cintiatr + thomytr + thomasadriano + gtatrilogy + minecraft
+        repetidos = []
+        for juego in todos:
+            if todos.count(juego) > 1 and juego not in repetidos:
+                repetidos.append(juego)
+        if repetidos:
+            print("Juegos repetidos:")
+            for r in repetidos:
+                print("-", r)
+        else:
+            print("No hay juegos repetidos.")
+
     elif opcion == "8":
         print("Saliendo del programa...")
         break
