@@ -1,0 +1,52 @@
+cuentas = ["marcelobr", "marceloscherer", "cintiatr", "thomytr", "thomasadriano", "gtatrilogy", "minecraft"]
+
+marcelobr = ["Fifa 25", "Expedition 33", "Cyberpunk 2077"]
+marceloscherer = ["The Witcher 3: Wild Hunt", "Fifa 24"]
+cintiatr = ["Far Cry 3: Classic", "Far Cry 5","Forza Horizon 5"]
+thomytr = ["No Man Sky", "Mortal Kombat 11"]
+thomasadriano = ["Need For Speed Heat", "Mortal Kombat XL"]
+gtatrilogy = ["Grand Theft Auto III", "Grand Theft Auto: San Andreas", "Grand Theft Auto: Liberty City"]
+minecraft = ["Minecraft"]
+
+while True:
+    print("\n--- MENÚ DE CUENTAS PLAYSTATION ---")
+    print("1 - Mostrar todas las cuentas")
+    print("2 - Ver juegos de una cuenta")
+    print("3 - Agregar juego a una cuenta")
+    print("4 - Eliminar juego de una cuenta")
+    print("5 - Buscar si tenés un juego")
+    print("6 - Contar todos los juegos")
+    print("7 - Mostrar juegos repetidos")
+    print("8 - Salir")
+
+    opcion = input("Elegí una opción: ")
+
+    if opcion == "1":
+        print("Cuentas disponibles:")
+        for cuenta in cuentas:
+            print("-", cuenta)
+
+    elif opcion == "2":
+        alias = input("Ingresá el alias de la cuenta: ")
+        if alias == "marcelobr":
+            print(marcelobr)
+        elif alias == "marceloscherer":
+            print(marceloscherer)
+        elif alias == "cintiatr":
+            print(cintiatr)
+        elif alias == "thomytr":
+            print(thomytr)
+        elif alias == "thomasadriano":
+            print(thomasadriano)
+        elif alias == "gtatrilogy":
+            print(gtatrilogy)
+        elif alias == "minecraft":
+            print(minecraft)
+        else:
+            print("Alias no encontrado.")
+    elif opcion == "8":
+        print("Saliendo del programa...")
+        break
+
+    else:
+        print("Opción inválida.")
