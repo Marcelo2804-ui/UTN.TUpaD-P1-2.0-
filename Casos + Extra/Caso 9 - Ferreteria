@@ -1,0 +1,164 @@
+herramientas = []
+existencias = []
+
+while True:
+    print("\nMenú:")
+    print("1. Ingresar herramientas")
+    print("2. Ingresar existencias por herramienta")
+    print("3. Mostrar existencias")
+    print("4. Consultar existencias por nombre")
+    print("5. Listar agotadas (0)")
+    print("6. Agregar herramienta")
+    print("7. Ver agotadas")
+    print("8. Actualizar existencias (venta/ingreso)")
+    print("9. Ver todas")
+    print("10. Salir")
+
+    opcion = input("Seleccione una opción: ").strip()
+
+    match opcion:
+        case '1':
+            cant = input("¿Cuántas herramientas desea ingresar? ").strip()
+            if not cant.isdigit():
+                print("ERROR: Debe ingresar un número.")
+                continue
+            cant = int(cant)
+            for i in range(cant):
+                nombre = input(f"Ingrese nombre de la herramienta #{i+1}: ").strip()
+                if nombre == "":
+                    print("ERROR: El nombre no puede estar vacío.")
+                    continue
+                nombre = nombre.title()
+                if nombre in herramientas:
+                    print("ERROR: Esa herramienta ya existe.")
+                    continue
+                herramientas.append(nombre)
+                existencias.append(0)
+                print(f"OK: {nombre} agregada con 0 existencias.")
+
+        case '2':
+            if not herramientas:
+                print("No hay herramientas para asignar existencias. Use opción 1 o 6.")
+                continue
+            for i in range(len(herramientas)):
+                valor = input(f"Existencias para '{herramientas[i]}': ").strip()
+                if not valor.isdigit():
+                    print("ERROR: Debe ingresar un número entero >= 0. Se cancela la carga.")
+                    break
+                valor = int(valor)
+                existencias[i] = valor
+            else:
+                print("Existencias actualizadas.")
+
+        case '3':
+            if not herramientas:
+                print("No hay herramientas cargadas.")
+                continue
+            for i in range(len(herramientas)):
+                print(f"{herramientas[i]}: {existencias[i]} unidades")
+
+        case '4':
+            if not herramientas:
+                print("No hay herramientas cargadas.")
+                continue
+            nombre = input("Nombre de la herramienta: ").strip().title()
+            if nombre not in herramientas:
+                print("Esa herramienta no existe.")
+            else:
+                idx = herramientas.index(nombre)
+                print(f"{nombre}: {existencias[idx]} unidades disponibles")
+
+        case '5':
+            if not herramientas:
+                print("No hay herramientas cargadas.")
+                continue
+            hay = False
+            for i in range(len(herramientas)):
+                if existencias[i] == 0:
+                    print(f"- {herramientas[i]}")
+                    hay = True
+            if not hay:
+                print("Ninguno.")
+
+        case '6':
+            nombre = input("Nombre de la nueva herramienta: ").strip()
+            if nombre == "":
+                print("ERROR: El nombre no puede estar vacío.")
+                continue
+            nombre = nombre.title()
+            if nombre in herramientas:
+                print("ERROR: Esa herramienta ya existe.")
+                continue
+            cant = input(f"Existencias iniciales para '{nombre}': ").strip()
+            if not cant.isdigit():
+                print("ERROR: Debe ingresar un número entero >= 0.")
+                continue
+            cant = int(cant)
+            herramientas.append(nombre)
+            existencias.append(cant)
+            print(f"OK: {nombre} agregada con {cant} existencias.")
+
+        case '7':
+            if not herramientas:
+                print("No hay herramientas cargadas.")
+                continue
+            hay = False
+            for i in range(len(herramientas)):
+                if existencias[i] == 0:
+                    print(f"- {herramientas[i]}")
+                    hay = True
+            if not hay:
+                print("Ninguno.")
+
+        case '8':
+            if not herramientas:
+                print("No hay herramientas cargadas.")
+                continue
+            nombre = input("Herramienta a actualizar (venta/ingreso): ").strip().title()
+            if nombre not in herramientas:
+                print("Esa herramienta no existe.")
+                continue
+            idx = herramientas.index(nombre)
+            print(f"Stock actual de '{nombre}': {existencias[idx]} unidades")
+            modo = input("Ingrese 'v' para venta o 'i' para ingreso: ").strip().lower()
+            if modo == 'v':
+                cant = input("¿Cuántas unidades desea vender? ").strip()
+                if not cant.isdigit():
+                    print("ERROR: Debe ingresar un número entero > 0.")
+                    continue
+                cant = int(cant)
+                if cant <= 0:
+                    print("ERROR: Debe ser mayor que 0.")
+                    continue
+                if cant > existencias[idx]:
+                    print("ERROR: No puede vender más de las disponibles.")
+                    continue
+                existencias[idx] -= cant
+                print(f"Venta OK. Nuevo stock: {existencias[idx]}")
+            elif modo == 'i':
+                cant = input("¿Cuántas unidades desea ingresar? ").strip()
+                if not cant.isdigit():
+                    print("ERROR: Debe ingresar un número entero > 0.")
+                    continue
+                cant = int(cant)
+                if cant <= 0:
+                    print("ERROR: Debe ser mayor que 0.")
+                    continue
+                existencias[idx] += cant
+                print(f"Ingreso OK. Nuevo stock: {existencias[idx]}")
+            else:
+                print("Opción inválida. Use 'v' o 'i'.")
+
+        case '9':
+            if not herramientas:
+                print("No hay herramientas cargadas.")
+                continue
+            for i in range(len(herramientas)):
+                print(f"{herramientas[i]}: {existencias[i]} unidades")
+
+        case '10':
+            print("Hasta luego.")
+            break
+
+        case _:
+            print("Opción inválida. Intente nuevamente.")
