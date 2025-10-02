@@ -1,0 +1,145 @@
+excursiones = []
+cupos = []
+
+while True:
+    print("\nMenú:")
+    print("1. Ingresar excursiones")
+    print("2. Ingresar cupos por excursión")
+    print("3. Mostrar oferta/cupos")
+    print("4. Consultar cupo por nombre")
+    print("5. Listar excursiones sin cupo")
+    print("6. Agregar excursión")
+    print("7. Ver sin cupo")
+    print("8. Actualizar cupos")
+    print("9. Ver todas excursiones")
+    print("10. Salir")
+
+    opcion = input("Seleccione una opción: ").strip()
+
+    match opcion:
+        case '1':
+            cant = input("¿Cuántas excursiones desea ingresar? ").strip()
+            if not cant.isdigit():
+                print("ERROR: Debe ingresar un número.")
+                continue
+            cant = int(cant)
+            for i in range(cant):
+                nombre = input(f"Ingrese nombre de la excursión #{i+1}: ").strip()
+                if nombre == "":
+                    print("ERROR: El nombre no puede estar vacío.")
+                    continue
+                nombre = nombre.title()
+                if nombre in excursiones:
+                    print("ERROR: Esa excursión ya existe.")
+                    continue
+                excursiones.append(nombre)
+                cupos.append(0)
+                print(f"Excursión {nombre} agregada con 0 cupos.")
+
+        case '2':
+            if not excursiones:
+                print("No hay excursiones cargadas.")
+                continue
+            for i in range(len(excursiones)):
+                valor = input(f"Cupos para '{excursiones[i]}': ").strip()
+                if not valor.isdigit():
+                    print("ERROR: Debe ingresar un número entero >= 0. Se cancela la carga.")
+                    break
+                valor = int(valor)
+                cupos[i] = valor
+            else:
+                print("Cupos actualizados.")
+
+        case '3':
+            if not excursiones:
+                print("No hay excursiones cargadas.")
+                continue
+            for i in range(len(excursiones)):
+                print(f"Excursión: {excursiones[i]}, Cupos: {cupos[i]}")
+
+        case '4':
+            if not excursiones:
+                print("No hay excursiones cargadas.")
+                continue
+            nombre = input("Nombre de la excursión: ").strip().title()
+            if nombre not in excursiones:
+                print("Esa excursión no existe.")
+            else:
+                idx = excursiones.index(nombre)
+                print(f"Excursión: {nombre}, Cupos: {cupos[idx]}")
+
+        case '5':
+            if not excursiones:
+                print("No hay excursiones cargadas.")
+                continue
+            hay = False
+            for i in range(len(excursiones)):
+                if cupos[i] == 0:
+                    print(f"- {excursiones[i]}")
+                    hay = True
+            if not hay:
+                print("Ninguna.")
+
+        case '6':
+            nombre = input("Nombre de la nueva excursión: ").strip()
+            if nombre == "":
+                print("ERROR: El nombre no puede estar vacío.")
+                continue
+            nombre = nombre.title()
+            if nombre in excursiones:
+                print("ERROR: Esa excursión ya existe.")
+                continue
+            cant = input(f"Cupos iniciales para '{nombre}': ").strip()
+            if not cant.isdigit():
+                print("ERROR: Debe ingresar un número entero >= 0.")
+                continue
+            cant = int(cant)
+            excursiones.append(nombre)
+            cupos.append(cant)
+            print(f"Excursión {nombre} agregada con {cant} cupos.")
+
+        case '7':
+            if not excursiones:
+                print("No hay excursiones cargadas.")
+                continue
+            hay = False
+            for i in range(len(excursiones)):
+                if cupos[i] == 0:
+                    print(f"- {excursiones[i]}")
+                    hay = True
+            if not hay:
+                print("Ninguna.")
+
+        case '8':
+            if not excursiones:
+                print("No hay excursiones cargadas.")
+                continue
+            nombre = input("Nombre de la excursión: ").strip().title()
+            if nombre not in excursiones:
+                print("Esa excursión no existe.")
+                continue
+            idx = excursiones.index(nombre)
+            valor = input("Nuevo número de cupos: ").strip()
+            if not valor.isdigit():
+                print("ERROR: Debe ingresar un número entero >= 0.")
+                continue
+            valor = int(valor)
+            if valor < 0:
+                print("ERROR: No puede ser negativo.")
+                continue
+            cupos[idx] = valor
+            print(f"Cupos actualizados. Excursión {nombre}: {valor}")
+
+        case '9':
+            if not excursiones:
+                print("No hay excursiones cargadas.")
+                continue
+            for i in range(len(excursiones)):
+                print(f"Excursión: {excursiones[i]}, Cupos: {cupos[i]}")
+
+        case '10':
+            print("Hasta luego.")
+            break
+
+        case _:
+            print("Opción no válida. Intente nuevamente.")
