@@ -1,0 +1,141 @@
+habitaciones = []
+estados = []
+
+while True:
+    print("\nMenú:")
+    print("1. Ingresar números de habitación")
+    print("2. Ingresar estados (0=libre / 1=ocupada)")
+    print("3. Mostrar estado general")
+    print("4. Consultar estado de una habitación")
+    print("5. Listar ocupadas o libres")
+    print("6. Agregar habitación")
+    print("7. Ver libres")
+    print("8. Cambiar estado")
+    print("9. Ver todas")
+    print("10. Salir")
+
+    opcion = input("Seleccione una opción: ").strip()
+
+    match opcion:
+        case '1':
+            cant = input("¿Cuántas habitaciones desea ingresar? ").strip()
+            if not cant.isdigit():
+                print("ERROR: Debe ingresar un número.")
+                continue
+            cant = int(cant)
+            for i in range(cant):
+                num = input(f"Ingrese número de habitación #{i+1}: ").strip()
+                if num == "":
+                    print("ERROR: El número no puede estar vacío.")
+                    continue
+                if num in habitaciones:
+                    print("ERROR: Esa habitación ya existe.")
+                    continue
+                habitaciones.append(num)
+                estados.append(0)
+                print(f"Habitación {num} agregada con estado Libre.")
+
+        case '2':
+            if not habitaciones:
+                print("No hay habitaciones cargadas.")
+                continue
+            for i in range(len(habitaciones)):
+                valor = input(f"Estado para habitación {habitaciones[i]} (0=libre,1=ocupada): ").strip()
+                if valor not in ['0', '1']:
+                    print("ERROR: Estado inválido. Se cancela la carga.")
+                    break
+                estados[i] = int(valor)
+            else:
+                print("Estados actualizados.")
+
+        case '3':
+            if not habitaciones:
+                print("No hay habitaciones cargadas.")
+                continue
+            for i in range(len(habitaciones)):
+                estado = "Libre" if estados[i] == 0 else "Ocupada"
+                print(f"Habitación {habitaciones[i]}: {estado}")
+
+        case '4':
+            if not habitaciones:
+                print("No hay habitaciones cargadas.")
+                continue
+            num = input("Número de habitación: ").strip()
+            if num not in habitaciones:
+                print("Esa habitación no existe.")
+            else:
+                idx = habitaciones.index(num)
+                estado = "Libre" if estados[idx] == 0 else "Ocupada"
+                print(f"Habitación {num}: {estado}")
+
+        case '5':
+            if not habitaciones:
+                print("No hay habitaciones cargadas.")
+                continue
+            tipo = input("Ingrese 'l' para libres o 'o' para ocupadas: ").strip().lower()
+            if tipo not in ['l', 'o']:
+                print("Opción inválida.")
+                continue
+            for i in range(len(habitaciones)):
+                if tipo == 'l' and estados[i] == 0:
+                    print(f"- Habitación {habitaciones[i]}")
+                elif tipo == 'o' and estados[i] == 1:
+                    print(f"- Habitación {habitaciones[i]}")
+
+        case '6':
+            num = input("Número de la nueva habitación: ").strip()
+            if num == "":
+                print("ERROR: El número no puede estar vacío.")
+                continue
+            if num in habitaciones:
+                print("ERROR: Esa habitación ya existe.")
+                continue
+            estado = input("Estado inicial (0=libre,1=ocupada): ").strip()
+            if estado not in ['0', '1']:
+                print("ERROR: Estado inválido.")
+                continue
+            habitaciones.append(num)
+            estados.append(int(estado))
+            print(f"Habitación {num} agregada con estado {'Libre' if estado == '0' else 'Ocupada'}.")
+
+        case '7':
+            if not habitaciones:
+                print("No hay habitaciones cargadas.")
+                continue
+            libres = [habitaciones[i] for i in range(len(habitaciones)) if estados[i] == 0]
+            if libres:
+                for h in libres:
+                    print(f"- Habitación {h}")
+            else:
+                print("No hay habitaciones libres.")
+
+        case '8':
+            if not habitaciones:
+                print("No hay habitaciones cargadas.")
+                continue
+            num = input("Número de habitación: ").strip()
+            if num not in habitaciones:
+                print("Esa habitación no existe.")
+                continue
+            idx = habitaciones.index(num)
+            nuevo = input("Nuevo estado (0=libre,1=ocupada): ").strip()
+            if nuevo not in ['0', '1']:
+                print("ERROR: Estado inválido.")
+                continue
+            estados[idx] = int(nuevo)
+            print(f"Estado actualizado. Habitación {num}: {'Libre' if nuevo == '0' else 'Ocupada'}.")
+
+        case '9':
+            if not habitaciones:
+                print("No hay habitaciones cargadas.")
+                continue
+            for i in range(len(habitaciones)):
+                estado = "Libre" if estados[i] == 0 else "Ocupada"
+                print(f"Habitación {habitaciones[i]}: {estado}")
+
+        case '10':
+            print("Hasta luego.")
+            break
+
+        case _:
+            print("Opción inválida. Intente nuevamente.")

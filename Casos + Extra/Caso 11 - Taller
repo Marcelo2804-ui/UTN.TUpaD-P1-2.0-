@@ -1,0 +1,152 @@
+ordenes = []
+horas = []
+
+while True:
+    print("\nMenú:")
+    print("1. Ingresar órdenes")
+    print("2. Ingresar horas estimadas por orden")
+    print("3. Mostrar agenda del taller")
+    print("4. Consultar horas por orden")
+    print("5. Listar órdenes con 0 horas")
+    print("6. Agregar orden")
+    print("7. Ver sin estimación")
+    print("8. Actualizar horas")
+    print("9. Ver agenda")
+    print("10. Salir")
+
+    opcion = input("Seleccione una opción: ").strip()
+
+    match opcion:
+        case '1':
+            cant = input("¿Cuántas órdenes desea ingresar? ").strip()
+            if not cant.isdigit():
+                print("ERROR: Debe ingresar un número.")
+                continue
+            cant = int(cant)
+            for i in range(cant):
+                codigo = input(f"Ingrese código de la orden #{i+1}: ").strip().upper()
+                if codigo == "":
+                    print("ERROR: El código no puede estar vacío.")
+                    continue
+                if codigo in ordenes:
+                    print("ERROR: Esa orden ya existe.")
+                    continue
+                ordenes.append(codigo)
+                horas.append(0.0)
+                print(f"Orden {codigo} agregada con 0 horas.")
+
+        case '2':
+            if not ordenes:
+                print("No hay órdenes cargadas.")
+                continue
+            for i in range(len(ordenes)):
+                valor = input(f"Horas para orden {ordenes[i]}: ").strip()
+                try:
+                    valor = float(valor)
+                except:
+                    print("ERROR: Debe ingresar un número válido. Se cancela la carga.")
+                    break
+                if valor < 0:
+                    print("ERROR: No puede ser negativo. Se cancela la carga.")
+                    break
+                horas[i] = valor
+            else:
+                print("Horas actualizadas.")
+
+        case '3':
+            if not ordenes:
+                print("No hay órdenes cargadas.")
+                continue
+            for i in range(len(ordenes)):
+                print(f"Orden: {ordenes[i]}, Tiempo estimado: {horas[i]} horas")
+
+        case '4':
+            if not ordenes:
+                print("No hay órdenes cargadas.")
+                continue
+            codigo = input("Código de la orden: ").strip().upper()
+            if codigo not in ordenes:
+                print("Esa orden no existe.")
+            else:
+                idx = ordenes.index(codigo)
+                print(f"Orden: {codigo}, Tiempo estimado: {horas[idx]} horas")
+
+        case '5':
+            if not ordenes:
+                print("No hay órdenes cargadas.")
+                continue
+            hay = False
+            for i in range(len(ordenes)):
+                if horas[i] == 0:
+                    print(f"- {ordenes[i]}")
+                    hay = True
+            if not hay:
+                print("Ninguna.")
+
+        case '6':
+            codigo = input("Código de la nueva orden: ").strip().upper()
+            if codigo == "":
+                print("ERROR: El código no puede estar vacío.")
+                continue
+            if codigo in ordenes:
+                print("ERROR: Esa orden ya existe.")
+                continue
+            valor = input(f"Horas estimadas para {codigo}: ").strip()
+            try:
+                valor = float(valor)
+            except:
+                print("ERROR: Debe ingresar un número válido.")
+                continue
+            if valor < 0:
+                print("ERROR: No puede ser negativo.")
+                continue
+            ordenes.append(codigo)
+            horas.append(valor)
+            print(f"Orden {codigo} agregada con {valor} horas.")
+
+        case '7':
+            if not ordenes:
+                print("No hay órdenes cargadas.")
+                continue
+            hay = False
+            for i in range(len(ordenes)):
+                if horas[i] == 0:
+                    print(f"- {ordenes[i]}")
+                    hay = True
+            if not hay:
+                print("Ninguna.")
+
+        case '8':
+            if not ordenes:
+                print("No hay órdenes cargadas.")
+                continue
+            codigo = input("Código de la orden: ").strip().upper()
+            if codigo not in ordenes:
+                print("Esa orden no existe.")
+                continue
+            idx = ordenes.index(codigo)
+            valor = input("Nuevo tiempo estimado (horas): ").strip()
+            try:
+                valor = float(valor)
+            except:
+                print("ERROR: Debe ingresar un número válido.")
+                continue
+            if valor < 0:
+                print("ERROR: No puede ser negativo.")
+                continue
+            horas[idx] = valor
+            print(f"Tiempo actualizado. Orden {codigo}: {valor} horas.")
+
+        case '9':
+            if not ordenes:
+                print("No hay órdenes cargadas.")
+                continue
+            for i in range(len(ordenes)):
+                print(f"Orden: {ordenes[i]}, Tiempo estimado: {horas[i]} horas")
+
+        case '10':
+            print("Hasta luego.")
+            break
+
+        case _:
+            print("Opción inválida. Intente nuevamente.")
