@@ -1,42 +1,56 @@
 import csv
 
-def cargar_datos_csv(ruta_archivo):
+# ==================== CARGA DE DATOS ====================
+
+def cargar_datos(archivo):
     """
-    Lee el archivo CSV y lo convierte en una lista de diccionarios.
+    Lee el archivo CSV y retorna una lista de diccionarios con los datos de países.
+    Cada país es un diccionario con: nombre, poblacion, superficie, continente
     """
     paises = []
     try:
-        # Abrimos el archivo en modo lectura ('r') de forma segura
-        with open(ruta_archivo, mode='r', encoding='utf-8') as archivo:
-            lector_csv = csv.reader(archivo)
-            
-            # Saltamos la primera línea del archivo, que es el encabezado
-            next(lector_csv)
-
-            # Recorremos cada fila de datos del archivo
-            for fila in lector_csv:
-                # Creamos un diccionario para este país
+        with open(archivo, 'r', encoding='utf-8') as file:
+            lector = csv.DictReader(file)
+            for fila in lector:
                 pais = {
-                    'nombre': fila[0],
-                    'poblacion': int(fila[1]), # Convertimos el texto a número
-                    'superficie': int(fila[2]), # Convertimos el texto a número
-                    'continente': fila[3]
+                    'nombre': fila['nombre'],
+                    'poblacion': int(fila['poblacion']),
+                    'superficie': int(fila['superficie']),
+                    'continente': fila['continente']
                 }
-                # Agregamos el país a nuestra lista principal
                 paises.append(pais)
-
+        print(f"✓ Se cargaron {len(paises)} países correctamente.\n")
+        return paises
     except FileNotFoundError:
-        print(f"Error: No se encontró el archivo en la ruta '{ruta_archivo}'.")
-    
-    return paises
+        print(f"✗ Error: No se encontró el archivo '{archivo}'")
+        return []
+    except ValueError:
+        print("✗ Error: El archivo contiene datos con formato incorrecto")
+        return []
+    except Exception as e:
+        print(f"✗ Error inesperado: {e}")
+        return []
 
-# --- Bloque para probar que todo funcione ---
-# Este código solo se ejecuta cuando corrés este archivo
-if __name__ == "__main__":
-    lista_de_paises = cargar_datos_csv('paises.csv')
+# ==================== PROGRAMA PRINCIPAL ====================
+
+def main():
+    """
+    Función principal del programa
+    """
+    print("=" * 50)
+    print("    SISTEMA DE GESTIÓN DE DATOS DE PAÍSES")
+    print("=" * 50)
     
-    if lista_de_paises:
-        print("¡Datos cargados exitosamente! ✅")
-        print("--- Verificando los primeros 2 países: ---")
-        print(lista_de_paises[0])
-        print(lista_de_paises[1])
+    # Cargar datos del CSV (usando ruta relativa)
+    paises = cargar_datos("paises.csv")
+    
+    if not paises:
+        print("No se pueden continuar sin datos. Saliendo...")
+        return
+    
+    # Aquí irá el menú y las demás funcionalidades
+    print("Sistema listo. Aquí implementarás el menú...")
+
+# Ejecutar el programa
+if _name_ == "_main_":
+    main()
