@@ -1,3 +1,46 @@
+# Trabajo Práctico Integrador – Programación 1
+
+Este proyecto gestiona datos de países desde un archivo CSV (`paises.csv`). Permite buscar, filtrar, ordenar y ver estadísticas.
+
+## Estructura del proyecto
+
+- `main.py`: Orquestación del programa y menú interactivo.
+- `io_utils.py`: Utilidades de E/S: construcción de rutas y carga de CSV.
+- `operaciones.py`: Lógica de negocio y presentación (búsquedas, filtros, ordenamientos y estadísticas).
+- `validaciones.py`: Entradas de usuario robustas (enteros y texto).
+- `quick_check.py`: Chequeo rápido no interactivo para validar que todo funciona.
+- `paises.csv`: Fuente de datos.
+
+## Requisitos
+
+- Python 3.8+
+- No requiere librerías externas.
+
+## Cómo ejecutar
+
+1. Modo interactivo (menú): ejecutar `main.py`.
+2. Chequeo rápido (no interactivo): ejecutar `quick_check.py`.
+
+## Decisiones de diseño (alineado a rúbrica)
+
+- Modularización: código separado por responsabilidades claras (I/O, lógica, validaciones, orquestación).
+- Robustez:
+  - Carga de CSV con manejo de errores y rutas relativas al script.
+  - Validación de entradas numéricas y de texto para evitar excepciones.
+  - Filtrado y ordenamiento seguros (conversión a tipos y defaults).
+- Legibilidad:
+  - Nombres descriptivos, mensajes claros para el usuario y salidas formateadas.
+  - Tipado opcional (`typing`) en funciones públicas.
+- Reutilización:
+  - Funciones puras reutilizables para filtros/ordenamientos.
+- Pruebas básicas:
+  - `quick_check.py` recorre casos clave: búsqueda, filtros, orden por densidad.
+
+## Posibles mejoras
+
+- Tests unitarios con `unittest` o `pytest`.
+- Internacionalización de formatos numéricos.
+- Exportar resultados a CSV.
 🌍 Sistema de Gestión de Datos de Países
 📖 Descripción del Proyecto
 Sistema desarrollado en Python para gestionar y analizar información sobre países del mundo. Permite realizar búsquedas, filtrados, ordenamientos y cálculos estadísticos sobre un dataset que incluye datos de población, superficie y continente de 195 países.
