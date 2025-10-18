@@ -1,0 +1,4 @@
+nombre,precio,cantidad
+Lapicera,120.5,30
+Cuaderno,450.0,15
+Goma,50.0,40
